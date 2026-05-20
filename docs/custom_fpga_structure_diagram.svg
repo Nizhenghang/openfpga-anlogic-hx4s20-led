@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="950" viewBox="0 0 1400 950">
+  <defs>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#ea580c"/>
+    </marker>
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed"/>
+    </marker>
+    <style>
+      .title { font: 700 34px "Microsoft YaHei", "Noto Sans CJK SC", Arial, sans-serif; fill: #0f172a; }
+      .subtitle { font: 500 17px "Microsoft YaHei", "Noto Sans CJK SC", Arial, sans-serif; fill: #475569; }
+      .label { font: 700 18px "Microsoft YaHei", "Noto Sans CJK SC", Arial, sans-serif; fill: #0f172a; }
+      .small { font: 500 14px "Microsoft YaHei", "Noto Sans CJK SC", Arial, sans-serif; fill: #334155; }
+      .tiny { font: 500 12px "Microsoft YaHei", "Noto Sans CJK SC", Arial, sans-serif; fill: #475569; }
+      .mono { font: 600 13px Consolas, "Microsoft YaHei", monospace; fill: #1e293b; }
+      .board { fill: #eff6ff; stroke: #2563eb; stroke-width: 2.5; rx: 18; }
+      .wrapper { fill: #f8fafc; stroke: #64748b; stroke-width: 2; rx: 14; }
+      .fabric { fill: #fff7ed; stroke: #ea580c; stroke-width: 2.5; rx: 16; }
+      .core { fill: #fefce8; stroke: #ca8a04; stroke-width: 2; rx: 12; }
+      .logic { fill: #f0fdf4; stroke: #16a34a; stroke-width: 1.8; rx: 10; }
+      .io { fill: #ecfeff; stroke: #0891b2; stroke-width: 1.8; rx: 10; }
+      .cfg { fill: #f5f3ff; stroke: #7c3aed; stroke-width: 1.8; rx: 10; }
+      .route { fill: #fffbeb; stroke: #d97706; stroke-width: 1.7; rx: 10; }
+      .white { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5; rx: 10; }
+      .line-blue { stroke: #2563eb; stroke-width: 2.2; fill: none; marker-end: url(#arrow-blue); }
+      .line-orange { stroke: #ea580c; stroke-width: 2.2; fill: none; marker-end: url(#arrow-orange); }
+      .line-purple { stroke: #7c3aed; stroke-width: 2.2; fill: none; marker-end: url(#arrow-purple); }
+      .dash { stroke-dasharray: 7 5; }
+    </style>
+  </defs>
+
+  <rect width="1400" height="950" fill="#ffffff"/>
+  <text x="70" y="62" class="title">基于 OpenFPGA 的自定义 FPGA 结构示意图</text>
+  <text x="72" y="94" class="subtitle">安路 HX4S20 作为物理载体，内部承载 OpenFPGA 生成的可配置 soft FPGA fabric，并通过配置链加载流水灯 bitstream。</text>
+
+  <rect x="55" y="125" width="1290" height="755" class="board"/>
+  <text x="82" y="162" class="label">安路 HX4S20 开发板 / EG4S20BG256</text>
+  <text x="82" y="188" class="small">物理 FPGA：负责承载整个自定义 FPGA 电路</text>
+
+  <rect x="85" y="225" width="220" height="90" class="white"/>
+  <text x="112" y="260" class="label">板载 50MHz 时钟</text>
+  <text x="132" y="287" class="mono">CLOCK -> R7</text>
+
+  <rect x="1085" y="735" width="220" height="90" class="white"/>
+  <text x="1132" y="770" class="label">板载 4 个 LED</text>
+  <text x="1107" y="797" class="mono">A4 / A3 / C10 / B12</text>
+
+  <rect x="350" y="205" width="910" height="625" class="wrapper"/>
+  <text x="378" y="242" class="label">板级封装：anlogic_openfpga_wrapper</text>
+  <text x="378" y="268" class="small">负责上电配置、配置链驱动、运行时钟分频、复位控制和 HX4S20 LED 映射</text>
+
+  <rect x="382" y="300" width="215" height="95" class="cfg"/>
+  <text x="417" y="333" class="label">配置状态机</text>
+  <text x="407" y="360" class="mono">RESET -> LOAD</text>
+  <text x="410" y="382" class="mono">SETTLE -> RUN</text>
+
+  <rect x="625" y="300" width="215" height="95" class="cfg"/>
+  <text x="653" y="333" class="label">配置数据 ROM</text>
+  <text x="650" y="360" class="mono">fabric_bitstream</text>
+  <text x="683" y="382" class="mono">1946 bits</text>
+
+  <rect x="868" y="300" width="215" height="95" class="white"/>
+  <text x="913" y="333" class="label">运行时钟</text>
+  <text x="890" y="360" class="small">50MHz 分频后送入</text>
+  <text x="920" y="382" class="mono">op_clk</text>
+
+  <rect x="385" y="430" width="835" height="360" class="fabric"/>
+  <text x="415" y="468" class="label">自定义 FPGA 本体：OpenFPGA 生成的 fpga_top</text>
+  <text x="415" y="494" class="small">这部分就是项目中的“自定义 FPGA”，不是普通流水灯逻辑，而是一套可配置 FPGA fabric。</text>
+
+  <rect x="415" y="525" width="180" height="95" class="cfg"/>
+  <text x="452" y="558" class="label">配置链 CCFF</text>
+  <text x="438" y="585" class="mono">ccff_head -> ...</text>
+  <text x="462" y="607" class="mono">ccff_tail</text>
+
+  <rect x="415" y="650" width="180" height="95" class="io"/>
+  <text x="454" y="683" class="label">IO Ring</text>
+  <text x="438" y="710" class="mono">64 GPIO Pads</text>
+  <text x="430" y="732" class="tiny">PAD[52] clk, PAD[1] reset</text>
+
+  <rect x="635" y="525" width="355" height="220" class="core"/>
+  <text x="730" y="558" class="label">核心阵列：K4 / N4</text>
+  <text x="682" y="584" class="small">小规模 2x2 CLB 阵列，用于验证自定义 FPGA 架构</text>
+
+  <rect x="670" y="610" width="115" height="55" class="logic"/>
+  <text x="693" y="642" class="mono">CLB(1,1)</text>
+  <rect x="838" y="610" width="115" height="55" class="logic"/>
+  <text x="861" y="642" class="mono">CLB(1,2)</text>
+  <rect x="670" y="675" width="115" height="55" class="logic"/>
+  <text x="693" y="707" class="mono">CLB(2,1)</text>
+  <rect x="838" y="675" width="115" height="55" class="logic"/>
+  <text x="861" y="707" class="mono">CLB(2,2)</text>
+
+  <rect x="1018" y="525" width="170" height="95" class="logic"/>
+  <text x="1059" y="558" class="label">FLE 结构</text>
+  <text x="1040" y="585" class="mono">fracturable LUT4</text>
+  <text x="1078" y="607" class="mono">+ FF</text>
+
+  <rect x="1018" y="650" width="170" height="95" class="route"/>
+  <text x="1047" y="683" class="label">可配置互连</text>
+  <text x="1057" y="710" class="mono">SB / CBX / CBY</text>
+  <text x="1040" y="732" class="mono">chanx,y[0:13]</text>
+
+  <rect x="660" y="805" width="290" height="48" class="logic"/>
+  <text x="697" y="835" class="label">配置后的用户电路：led_shift 流水灯</text>
+
+  <path d="M 305 270 L 382 345" class="line-blue"/>
+  <path d="M 597 348 L 625 348" class="line-purple"/>
+  <path d="M 732 395 L 505 525" class="line-purple"/>
+  <path d="M 975 395 L 775 525" class="line-blue"/>
+  <path d="M 505 620 L 505 650" class="line-purple"/>
+  <path d="M 595 697 L 635 637" class="line-orange"/>
+  <path d="M 990 635 L 1018 572" class="line-orange"/>
+  <path d="M 990 690 L 1018 697" class="line-orange"/>
+  <path d="M 812 745 L 812 805" class="line-orange"/>
+  <path d="M 950 830 L 1085 780" class="line-blue"/>
+
+  <rect x="85" y="360" width="220" height="145" class="white"/>
+  <text x="116" y="394" class="label">板上运行关系</text>
+  <text x="108" y="424" class="small">HX4S20 内部不是直接跑</text>
+  <text x="113" y="447" class="small">普通 LED Verilog，而是先</text>
+  <text x="117" y="470" class="small">部署 fpga_top，再加载</text>
+  <text x="120" y="493" class="small">fabric bitstream。</text>
+
+  <rect x="85" y="545" width="220" height="185" class="white"/>
+  <text x="123" y="579" class="label">关键参数</text>
+  <text x="112" y="610" class="mono">K = 4 输入 LUT</text>
+  <text x="112" y="635" class="mono">N = 4 / 4 个 FLE</text>
+  <text x="112" y="660" class="mono">IO = 64 pads</text>
+  <text x="112" y="685" class="mono">Channel = 14 tracks</text>
+  <text x="112" y="710" class="mono">Bitstream = 1946 bits</text>
+
+  <text x="1115" y="242" class="small">最终现象</text>
+  <rect x="1085" y="260" width="220" height="108" class="white"/>
+  <text x="1110" y="295" class="mono">0001 -> 0010</text>
+  <text x="1110" y="320" class="mono"> -> 0100 -> 1000</text>
+  <text x="1110" y="345" class="small">每次只亮一个 LED</text>
+</svg>

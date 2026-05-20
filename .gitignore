@@ -1,0 +1,24 @@
+# TD / FPGA generated project files
+*_Runs/
+*.runs/
+*.cache/
+*.db
+*.jou
+*.log
+*.rpt
+*.sdc
+*.fs
+*.bit.bin
+
+# Keep the small OpenFPGA demo bitstream in this repo intentionally.
+!openfpga_artifacts/fabric_bitstream.bit
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local vendor documents should not be published unless their license allows it.
+HX4S20_manual.pdf
+*.pdf
